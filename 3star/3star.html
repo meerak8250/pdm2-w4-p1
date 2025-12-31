@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PDM2 - W4P1 - 3 Star Exercise</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./lib/main-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="./lib/libraries/p5.min.js"></script>
+    <script src="./lib/libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <h1>3 Star Exercise</h1>
+    <p>Your sketch:</p>
+    <div class="guidance">
+        <h2>Instructions</h2>
+        <div>
+            <p>So far, you've been moving the player around a grid of stationary objects. In platformer games, it 
+                is often the grid that moves horiontally while the player stays in the middle of the screen. The moving 
+                background creates the illusion that the player is moving through an environment bigger than 
+                the screen.
+            </p>
+            <p>If you refresh the page, you will see that the player object drops from the top of the canvas 
+                and stops when it hits the wall at the bottom. You can make the player jump by pressing "j" 
+                but it cannot be moved in any other way. Your task is to make the player appear to move horizontally 
+                by moving the grid, as described below.
+            </p>
+            <h3>Familiarise yourself with the code</h3>
+            <ol>
+                <li>Read through the <code>StationaryGridObject</code> class in stationaryGridObjects.js. It is quite 
+                different from the <code>StationaryObject</code> class you have seen before. The main difference is that the 
+            location and dimensions are provided in terms of the grid (rows and columns) rather than pixels. You will also 
+        notice that each <code>StationaryGridObject</code> contains a reference to the grid it belongs to, and it is added 
+    to that grid as soon as it is created.</li>
+                <li>Take time to read through the <code>MovingGrid</code> class in movingGrid.js. You will see that this implementation is similar 
+                to the previous <code>Grid</code> implementation, but it has some new static variables to represent direction and a state variable, <code>#direction</code>. 
+            There are also some differences in the <code>addToGrid()</code> and <code>isOccupied()</code> methods.</li>
+                <li>Take a look at the <code>PlatformPlayer</code> class in platformPlayer.js. The <code>PlatformPlayer</code> can be in 
+                    three possible states: jump (moving up), fall (moving down), or stop.</li>
+            </ol>
+            <h3>Make the <code>MovingGrid</code> moveable</h3>
+            <p>In the <code>MovingGrid</code> class:</p>
+            <ol>
+                <li>Add two new private attrbutes, <code>#offsetX</code> and <code>#speedX</code>. <code>#offsetX</code> represents the x coordinate of the grid (top left corner) and should be initialised with 0. There is already a getter method for this variable. Update 
+                this method so it returns the value of <code>#offsetX</code> instead of a hard coded number. <code>#speedX</code> sets the amount the grid 
+            should move by. Set it to 3.</li>
+                <li>Add a new public method called <code>move()</code>. This method should use <code>#speedX</code> to update the value of <code>#offsetX</code> depending on 
+                the grid's state (the <code>#direction</code> attribute).</li>
+                <li>You will need to make use of the <code>#offsetX</code> variable in the <code>isOccupied()</code> method to make sure that the method still works 
+                correctly when the grid has been moved. This will be easier to do after you have completed the steps below. You may find it helpful to look at 
+            how the grid offset is used in the <code>StationaryGridObject</code> class.</li>
+            </ol>
+            <p>In sketch.js:</p>
+            <ol>
+                <li>Go to the <code>draw()</code> function. There are two TODOs for you to implement. First, if the user 
+                    is pressing "a", the you should set the direction of the grid so that when it moves, the <em>player</em> appears 
+                    to move left. If they are pressing "d", set the direction of the grid so that the <em>player</em> 
+                    appears to move right.</li>
+                <li>Finally, call the grid's <code>move()</code> method after the grid's direction has been updated.</li>
+            </ol>
+            <p>Test your sketch carefully to make sure that it works as shown below. The key thing is that when the user presses 
+                "a" or "d", it is the grid that moves, not the player, but it creates the effect that the player is moving.
+            </p>
+            <h3>Optional extensions</h3>
+            <p>Here are some suggestions:</p>
+            <ol>
+                <li>The sketch only has one platform at the bottom. Make it more interesting by adding more platforms of 
+                    different widths. New platforms can be added in the <code>createWalls()</code> function toward the bottom 
+                    of sketch.js. The maximum jump height of the player is set in the <code>PlatformPlayer</code> class. 
+                    Feel free to change it!
+                </li>
+                <li>Most platformers have much wider grids. Modify the <code>MovingGrid</code> class so it is not restricted 
+                to the size of the canvas. Then, create a wider scene of platforms.</li>
+                <li>Add collectable items that the player can jump to get. The most OOP way to do this would be to create 
+                    subclasses of <code>StationaryGridObject</code> that are collectable, like the treasure in 
+                the 2 star exercise. </li>
+            </ol>
+            <p>Expected output:</p>
+            <p>
+                <video width="400" height="400" controls>
+                    <source src="./assets/platformer.mov" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </p>
+        </div>
+        <div>
+            <button class="btn btn-primary hint" type="button" data-bs-toggle="collapse" data-bs-target="#hint" aria-expanded="false" aria-controls="hint">
+                Hint
+            </button>
+            <div class="collapse" id="hint">
+                <div class="card card-body">
+                    <p>You should not need to edit the <code>PlatformPlayer</code> or <code>StationaryGridObject</code> at all. All changes should be in sketch.js and movingGrid.js.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="gameObject.js"></script>
+    <script src="stationaryGridObjects.js"></script>
+    <script src="platformPlayer.js"></script>
+    <script src="movingGrid.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>

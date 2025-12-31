@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>PDM2 - W4P1 - 2 Star Exercise</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
+    <link rel="stylesheet" type="text/css" href="./lib/main-styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-HwwvtgBNo3bZJJLYd8oVXjrBZt8cqVSpeBNS5n7C8IVInixGAoxmnlMuBnhbgrkm" crossorigin="anonymous"></script>
+    <script src="./lib/libraries/p5.min.js"></script>
+    <script src="./lib/libraries/p5.sound.min.js"></script>
+  </head>
+
+  <body>
+    <h1>2 Star Exercise</h1>
+    <p>Your sketch:</p>
+    <div class="guidance">
+        <h2>Instructions</h2>
+        <div>
+            <p><em>This exercise assumes you are familiar with class inheritance, which was the subject 
+                of Week 2 Lecture 2 and Week 2 Practical 2. If you missed this material, you may need to go 
+                back and complete it before continuing with this exercise.</em>
+            </p>
+            <p>In this exercise, you will create a new type of grid that will store references to objects found 
+                in each cell, instead of the true / false values in the existing grid. This will allow the stationary 
+                objects stored in the grid to respond when the player collides with them.
+            </p>
+            <ol>
+                <li>In stationaryObjects.js, add a new subclass of <code>StationaryObject</code> that will 
+                represent treasure the player can collect. The constructor of the new child class should take x, y, width, and height as arguments 
+        and should have its own colour e.g. yellow. Give each treasure a point value. Unlike <code>Walls</code>, which are solid (can't be passed through), 
+        the new child class should not be solid, meaning it can be passed through.</li>
+                <li>In sketch.js, create a simple scene involving walls and treasure (at least one of each). For 
+                    best collision detection results, place each object in a grid cell--the x and y coordinates should be multiples 
+                    of 50. Feel free to use an existing scene as a starting point. For example, the sketch in the 
+                    video below used the Week 4 Lecture 1 maze example as starter code.
+                </li>
+                <li>grid.js contains the <code>Grid</code> class discussed in lecture and used in the last exercise. If you're at all unsure of 
+                how it works, take some time to read through it.</li>
+                <li>Currently, the <code>Grid</code> stores booleans in the <code>#cells</code> array. You are going to modify this so each cell 
+                    stores <code>null</code> if the cell is empty or a child of <code>StationaryObject</code> if it is occupied. <code>null</code> is a JavaScript 
+            keyword meaning "nothing".
+                    <ol>
+                        <li>Modify the <code>#createEmptyGrid()</code> method so that each cell is initially set to <code>null</code> instead of <code>false</code></li>
+                        <li>Modify the <code>addToGrid()</code> method so that each cell that contains the <code>obstacle</code> argument is set to <code>obstacle</code> instead of <code> true</code></li>
+                        <li>Modify the <code>isOccupied()</code> method so that instead of returning whatever is contained in a particular grid cell, it returns <code>false</code> if the cell 
+                    contains <code>null</code>, and <code>true</code> if the cell contains a <code>StationaryObject</code>.</li>
+                    </ol>
+                </li>
+                <li>In sketch.js, create a global variable called <code>grid</code>, which should be an instance of the <code>Grid</code> class with a cell size of 50. If you're reusing 
+                code from lecture or the previous exercise, this variable should already exist and be set up properly.</li>
+                <li>Add all instances of walls and treasure to the grid by calling the <code>addToGrid()</code> method.</li>
+                <li>Make the player move using the keyboard. The player should not be able to move 
+                    through stationary objects that are solid, but it should be able to move through 
+                    stationary objects that are not solid. You will probably need 
+                    to add a new method to the <code>Grid</code> class that will return the contents of a particular cell. Feel free to make 
+                    modifications to the <code>Player</code> class as well.
+                </li>
+                <li>When the player passes over a treasure, the player should earn points and the treasure should disappear from the canvas. You will 
+                    need to modify the <code>Player</code> and <code>Treasure</code> classes.
+                </li>
+                <li>Optional extension: Add different types of stationary objects that the player can collect.</li>
+            </ol>
+            <p>Expected output:</p>
+            <p>
+                <video width="400" height="400" controls>
+                    <source src="./assets/2star.mov" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+            </p>
+        </div>
+        <div>
+            <button class="btn btn-primary hint" type="button" data-bs-toggle="collapse" data-bs-target="#hint" aria-expanded="false" aria-controls="hint">
+                Hint
+            </button>
+            <div class="collapse" id="hint">
+                <div class="card card-body">
+                    <h4>Step 1</h4>
+                    <p>When you create your new class, don't forget to add <code>extends StationaryObject</code> after the class 
+                    name. This means your class will inherit all attributes and methods from the <code>StationaryObject</code> class.</p>
+                    <h4>Step 4</h4>
+                    <p>The line inside <code>#createEmptyGrid()</code> that sets the initial value of each cell looks like this:</p>
+                    <pre>this.#cells[row][col] = false;</pre>
+                    <p>Change <code>false</code> to <code>null</code>.</p>
+                    <p>The line inside <code>addToGrid()</code> that indicates that a cell contains a stationary object looks like this:</p>
+                    <pre>this.#cells[row][col] = true;</pre>
+                    <p>Replace <code>true</code> with <code>obstacle</code>. This will store a reference to the <code>obstacle</code> in the 2D array that 
+                    represents the grid.</p>
+                    <p>The documentation for <code>isOccupied()</code> states that the method should return a boolean—<code>true</code> if there is an object in 
+                        that grid cell or <code>false</code> if it is empty. Currently, <code>isOccupied()</code> returns <code>true</code> or <code>false</code> by simply returning the content of the grid 
+                    cell. This made sense when the grid stored boolean values. Now that the grid stores either <code>null</code> or an object of type <code>StationaryObject</code>, 
+                you will need to write a conditional to determine whether to return <code>true</code> or <code>false</code>. Here is 
+                some pseudocode:</p>
+                    <pre>if the grid cell contains null:
+  return false
+else:
+  return true
+                    </pre>
+                    <p>Translate this pseudocode into JavaScript.</p>
+                    <h4>Step 7</h4>
+                    <p>You will need to check if a grid cell is occupied or not and, if it is occupied, whether the object it contains 
+                        is solid. The <code>StationaryObject</code> class contains a method called <code>isSolid()</code> that you can use to check 
+                    if an object is solid or not.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="gameObject.js"></script>
+    <script src="stationaryObjects.js"></script>
+    <script src="player.js"></script>
+    <script src="grid.js"></script>
+    <script src="sketch.js"></script>
+  </body>
+</html>
