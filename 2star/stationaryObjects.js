@@ -55,3 +55,9 @@ class Wall extends StationaryObject {
         super(x, y, w, h, 1, color(100));
     }
 }
+
+class Treasure extends StationaryObject{
+    constuctor(x,y,width,height){
+        super()
+    }
+}
